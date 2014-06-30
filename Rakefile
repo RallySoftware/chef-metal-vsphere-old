@@ -28,6 +28,6 @@ namespace :test do
 
   desc 'Destroy test machines'
   task :clean do |t|
-    shell_out! %Q{(cd test && chef-client -z -o test::destroy_all)}
+    shell_out! %Q{(cd test && chef-client -z -o test::vsphere,test::destroy_all)}
   end
 end
