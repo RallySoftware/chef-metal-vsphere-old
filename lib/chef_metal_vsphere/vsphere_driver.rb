@@ -26,9 +26,11 @@ module ChefMetalVsphere
 
     def self.canonicalize_url(driver_url, config)
       _, host, datacenter, cluster = driver_url.split(':', 4)
-      host       ||= config[:host]
-      datacenter ||= config[:datacenter]
-      cluster    ||= config[:cluster]
+      vmonkey_opts = VMonkey.default_opts
+
+      host       ||= vmonkey_opts[:host]
+      datacenter ||= vmonkey_opts[:datacenter]
+      cluster    ||= vmonkey_opts[:cluster]
 
       [ "vsphere:#{host}:#{datacenter}:#{cluster}", config ]
     end
@@ -81,7 +83,7 @@ module ChefMetalVsphere
 
     def monkey
       ## TODO - test @vim and reconnect on error - idle sessions get silently timed-out by vSphere  :P
-      @vim ||= VMonkey.connect()
+      @vim ||= VMonkey.connect
     end
 
     def create_vm(action_handler, machine_spec, machine_options)
@@ -121,8 +123,9 @@ module ChefMetalVsphere
         %w(is_windows ssh_username sudo ssh_gateway).each do |key|
           machine_spec.location[key] = machine_options[key.to_sym] if machine_options[key.to_sym]
         end
+
+        action_handler.performed_action "machine #{machine_spec.name} created as #{vm.config.instanceUuid} on #{driver_url}"
       end
-      action_handler.performed_action "machine #{machine_spec.name} created as #{vm.config.instanceUuid} on #{driver_url}"
       vm
     end
 
