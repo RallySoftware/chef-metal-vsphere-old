@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'chef', '~> 11.12'
   spec.add_dependency 'chef-metal', '~> 0.11'
-  spec.add_dependency 'vmonkey', '~> 0.1'
+  spec.add_dependency 'vmonkey', '~> 0.3'
 
   spec.add_development_dependency 'bundler', '~> 1.6'
   spec.add_development_dependency 'rspec', '~> 3.0'

@@ -24,3 +24,4 @@ mkmf.log
 **/local-mode-cache
 test/nodes
 test/clients
+.vmonkey
