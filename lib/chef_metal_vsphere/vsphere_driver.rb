@@ -58,6 +58,9 @@ module ChefMetalVsphere
       machine_for(machine_spec, machine_options, vm)
     end
 
+    def connect_to_machine(machine_spec, machine_options)
+      machine_for(machine_spec, machine_options)
+    end
 
     def destroy_machine(action_handler, machine_spec, machine_options)
       vm = vm_for(machine_spec)
@@ -270,9 +273,9 @@ module ChefMetalVsphere
           raise "VM was created with key name '#{machine_spec.location['key_name']}', but the corresponding private key was not found locally.  Check if the key is in Chef::Config.private_key_paths: #{Chef::Config.private_key_paths.join(', ')}"
         end
         result[:key_data] = [ key ]
-      elsif machine_options[:bootstrap_options][:key_path]
+      elsif machine_options[:bootstrap_options] && machine_options[:bootstrap_options][:key_path]
         result[:key_data] = [ IO.read(machine_options[:bootstrap_options][:key_path]) ]
-      elsif machine_options[:bootstrap_options][:key_name]
+      elsif machine_options[:bootstrap_options] && machine_options[:bootstrap_options][:key_name]
         result[:key_data] = [ get_private_key(machine_options[:bootstrap_options][:key_name]) ]
       elsif machine_options[:ssh_options] && machine_options[:ssh_options][:password]
         result[:password]     = machine_options[:ssh_options][:password]
@@ -281,7 +284,7 @@ module ChefMetalVsphere
         result[:keys_only]    = false
       else
         # TODO make a way to suggest other keys to try ...
-        raise "No key found to connect to #{machine_spec.name} (#{machine_spec.location.inspect})!"
+        raise "No key or password found to connect to #{machine_spec.name} (#{machine_spec.location.inspect})!  machine_options #{machine_options.inspect}"
       end
       result
     end
