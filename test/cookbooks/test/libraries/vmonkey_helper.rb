@@ -5,22 +5,24 @@ module VmonkeyHelper
         + #{ENV['VMONKEY_YML']} (see below)
 
       - On your vSphere system
-        + A VM or Template from which VMs will be cloned (:template_path)
-          (Clones of this VM must provide SSH port 22 with root password authentication)
-        + A working Folder into which VMs will be cloned (:working_folder)
+        + A VM or Template from which VMs will be cloned (:bootstrap_options => :template)
+        + A working Folder into which VMs will be cloned (:bootstrap_options => :working_folder)
+        + Clones of the Template must provide SSH port 22 with root password authentication (:ssh_options => :password)
 
     Place the following in #{ENV['VMONKEY_YML']}
-      host: host_name_or_ip_address
-      user: user_name
-      password: password
+      host: vcenter_host_name
+      user: vcenter_user_name
+      password: your_mothers_maiden_name
       insecure: true
       ssl: true
       datacenter: datacenter_name
       cluster: cluster_name
       test:
-        :root_password: your-root-pa$$word
-        :template_path: /path/to/a/vm_or_template
-        :working_folder: /path/to/a/folder
+        :bootstrap_options:
+          template: /path/to/a/vm/template
+          folder: /path/to/a/folder/to/place/new/vms
+        :ssh_options:
+          password: your_first_pet
     "
 
   def self.config

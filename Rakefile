@@ -31,3 +31,9 @@ namespace :test do
     shell_out! %Q{(cd test && chef-client -z -o test::vsphere,test::destroy_all)}
   end
 end
+
+desc 'Run RSpec specs'
+RSpec::Core::RakeTask.new(:spec)  
+
+desc 'Run all tests using vSphere'
+task test: [:spec, 'test:vsphere']
