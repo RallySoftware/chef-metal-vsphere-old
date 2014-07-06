@@ -1,5 +1,7 @@
 require 'chef_metal_vsphere'
-config = VmonkeyHelper.config
+require 'vmonkey'
+
+config = VMonkey.connect.opts
 
 with_driver 'vsphere'
 

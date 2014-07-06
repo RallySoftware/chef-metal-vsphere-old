@@ -22,6 +22,6 @@ tmp
 mkmf.log
 .vagrant
 **/local-mode-cache
-test/nodes
-test/clients
+test/**/nodes
+test/**/clients
 .vmonkey
